@@ -26,7 +26,7 @@ def articles_by_date(date: dt.date):
             'headline': article.xpath('string(.//a/@title)'),
             'is_paid': article.xpath('boolean(.//svg/title[text()="Icon: Spiegel Plus"])'),
             'pub_date': parse_date(article.xpath('string(./footer/span[1])'), relative_base=timestamp),
-            'category': article.xpath('string(./footer/span[3])'),
+            'channel': article.xpath('string(./footer/span[3])'),
         })
 
     return articles
