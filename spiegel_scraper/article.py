@@ -4,9 +4,17 @@ import lxml.html
 import requests
 
 
-def article_by_url(article_url: str):
-    resp = requests.get(article_url)
-    doc = lxml.html.fromstring(resp.content)
+def by_url(article_url: str):
+    html = html_by_url(article_url)
+    return scrape_html(html)
+
+
+def html_by_url(article_url: str):
+    return requests.get(article_url).content
+
+
+def scrape_html(article_html: str):
+    doc = lxml.html.fromstring(article_html)
 
     ld_content = doc.xpath('string(//script[@type="application/ld+json"]/text())')
     ld = json.loads(ld_content)
@@ -17,7 +25,7 @@ def article_by_url(article_url: str):
     info = settings['editorial']['info']
 
     return {
-        'url': article_url,
+        'url': doc.xpath('string(//link[@rel="canonical"]/@href)'),
         'id': info['article_id'],
         'channel': info['channel'],
         'subchannel': info['subchannel'],

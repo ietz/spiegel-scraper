@@ -5,7 +5,7 @@ import requests
 from spiegel_scraper.constants import TALK_ENDPOINT_URL
 
 
-def comments_by_article_id(article_id: str, page_size_limit: int = 1000):
+def by_article_id(article_id: str, page_size_limit: int = 1000):
     query = """
         query GetComments($assetId: ID!, $cursor: Cursor, $limit: Int) { 
           asset(id: $assetId) {

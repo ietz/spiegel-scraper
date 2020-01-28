@@ -1,4 +1,5 @@
 import datetime as dt
+import re
 
 import dateparser
 import requests
@@ -6,11 +7,22 @@ import lxml.html
 import tldextract
 
 
-def articles_by_date(date: dt.date):
-    timestamp = dt.datetime(date.year, date.month, date.day)
+def by_date(date: dt.date):
+    html = html_by_date(date)
+    return scrape_html(html)
+
+
+def html_by_date(date: dt.date):
     archive_url = f'https://www.spiegel.de/nachrichtenarchiv/artikel-{date.strftime("%d.%m.%Y")}.html'
     resp = requests.get(archive_url)
-    doc = lxml.html.fromstring(resp.content)
+    return resp.content
+
+
+def scrape_html(html: str):
+    doc = lxml.html.fromstring(html)
+    url = doc.xpath('string(//link[@rel="canonical"]/@href)')
+    date_string = re.search(r'/artikel-(\d{2}\.\d{2}\.\d{4})\.html$', url)[1]
+    timestamp = dt.datetime.strptime(date_string, '%d.%m.%Y')
 
     articles = []
     for article in doc.xpath('//article'):
