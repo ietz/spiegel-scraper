@@ -1,10 +1,9 @@
 import datetime as dt
 
+import dateparser
 import requests
 import lxml.html
 import tldextract
-
-from spiegel_scraper.util import parse_date
 
 
 def articles_by_date(date: dt.date):
@@ -25,8 +24,18 @@ def articles_by_date(date: dt.date):
             'url': url,
             'headline': article.xpath('string(.//a/@title)'),
             'is_paid': article.xpath('boolean(.//svg/title[text()="Icon: Spiegel Plus"])'),
-            'pub_date': parse_date(article.xpath('string(./footer/span[1])'), relative_base=timestamp),
+            'date_published': parse_date(article.xpath('string(./footer/span[1])'), relative_base=timestamp),
             'channel': article.xpath('string(./footer/span[3])'),
         })
 
     return articles
+
+
+def parse_date(date_string: str, relative_base: dt.datetime):
+    return dateparser.parse(
+        date_string=date_string,
+        languages=['de'],
+        settings={
+            'RELATIVE_BASE': relative_base,
+        },
+    )

@@ -2,7 +2,7 @@ from collections import defaultdict
 
 import requests
 
-ENDPOINT_URL = 'https://prod.talk.spiegel.de/api/v1/graph/ql'
+from spiegel_scraper.constants import TALK_ENDPOINT_URL
 
 
 def comments_by_article_id(article_id: str, page_size_limit: int = 1000):
@@ -53,7 +53,7 @@ def comments_by_article_id(article_id: str, page_size_limit: int = 1000):
     comments = []
     cursor = None
     while True:
-        resp = requests.post(ENDPOINT_URL, json={'query': query, 'variables': {
+        resp = requests.post(TALK_ENDPOINT_URL, json={'query': query, 'variables': {
             'assetId': article_id,
             'cursor': cursor,
             'limit': page_size_limit,

@@ -17,7 +17,7 @@ def article_by_url(article_url: str):
     info = settings['editorial']['info']
 
     return {
-        'url': 'article_url',
+        'url': article_url,
         'id': info['article_id'],
         'channel': info['channel'],
         'subchannel': info['subchannel'],
