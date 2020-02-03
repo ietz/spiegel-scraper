@@ -36,14 +36,14 @@ def scrape_html(html: str):
             'url': url,
             'headline': article.xpath('string(.//a/@title)'),
             'is_paid': article.xpath('boolean(.//svg/title[text()="Icon: Spiegel Plus"])'),
-            'date_published': parse_date(article.xpath('string(./footer/span[1])'), relative_base=timestamp),
+            'date_published': _parse_date(article.xpath('string(./footer/span[1])'), relative_base=timestamp),
             'channel': article.xpath('string(./footer/span[3])'),
         })
 
     return articles
 
 
-def parse_date(date_string: str, relative_base: dt.datetime):
+def _parse_date(date_string: str, relative_base: dt.datetime):
     return dateparser.parse(
         date_string=date_string,
         languages=['de'],
