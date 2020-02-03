@@ -1,7 +1,7 @@
 # spiegel-scraper
 [![PyPI](https://img.shields.io/pypi/v/spiegel-scraper)](https://pypi.org/project/spiegel-scraper/)
 
-Scrape article metadata and comments from DER SPIEGEL
+Scrape articles and comments from DER SPIEGEL
 
 ## Setup
 ```bash
