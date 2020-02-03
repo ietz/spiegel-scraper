@@ -1,4 +1,5 @@
 import json
+import re
 
 import lxml.html
 import requests
@@ -24,6 +25,14 @@ def scrape_html(article_html: str):
     settings = json.loads(doc.xpath('string(//script[@type="application/settings+json"]/text())'))
     info = settings['editorial']['info']
 
+    text_node_selector = \
+        'main .word-wrap > p,'  \
+        'main .word-wrap > h3, ' \
+        'main .word-wrap > ul > li, ' \
+        'main .word-wrap > ol > li'
+    text_nodes = doc.cssselect(text_node_selector)
+    text = re.sub(r'\n+', '\n', '\n'.join([node.text_content() for node in text_nodes])).strip()
+
     return {
         'url': doc.xpath('string(//link[@rel="canonical"]/@href)'),
         'id': info['article_id'],
@@ -34,6 +43,7 @@ def scrape_html(article_html: str):
             'social': info['headline_social']
         },
         'intro': info['intro'],
+        'text': text,
         'topics': info['topics'],
         'author': settings['editorial']['author'],
         'comments_enabled': settings['editorial']['attributes']['is_comments_enabled'],
