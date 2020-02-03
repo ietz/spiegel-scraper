@@ -15,7 +15,7 @@ def by_date(date: dt.date):
 def html_by_date(date: dt.date):
     archive_url = f'https://www.spiegel.de/nachrichtenarchiv/artikel-{date.strftime("%d.%m.%Y")}.html'
     resp = requests.get(archive_url)
-    return resp.content
+    return resp.text
 
 
 def scrape_html(html: str):

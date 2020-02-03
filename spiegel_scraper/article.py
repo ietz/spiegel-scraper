@@ -10,7 +10,7 @@ def by_url(article_url: str):
 
 
 def html_by_url(article_url: str):
-    return requests.get(article_url).content
+    return requests.get(article_url).text
 
 
 def scrape_html(article_html: str):
